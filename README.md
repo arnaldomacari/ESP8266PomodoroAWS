@@ -6,6 +6,8 @@
 
 <hr style="border:0; height: 5px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 255, 1), rgba(0, 0, 0, 0));">
 
+---
+
 ## Justificativa
 **Este projeto foi criado para fins didáticos** e mostra a integração de várias tecnologias para obter um **IoT** funcional. A segunda justificativa é que, particularmente, eu quero um bom temporizador pomodoro, com um cronômetro para academia e que seja prático de usar.
 
@@ -29,9 +31,13 @@ sincronizando com AWS usando Flask e apresentando um dashboard com Streamlit
 <a id="ancora"></a>
 ## Índice 
 [Etapas](#ancora0)
+
 [Componentes utilizados](#ancora1)
+
 [Bibliotecas utilizadas](#ancora2)
+
 [Circuito montado no Protoboard](#ancora3)
+
 
 <hr style="border:0; height: 5px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 255, 1), rgba(0, 0, 0, 0));">
 
@@ -45,7 +51,7 @@ sincronizando com AWS usando Flask e apresentando um dashboard com Streamlit
 | Programação para Tm1638           | ![Static Status](https://img.shields.io/badge/Finalizado-0000FF) |
 | Programação para Rtc3231          | ![Static Status](https://img.shields.io/badge/Finalizado-0000FF) |
 | Programação para mostrar data e hora| ![Static Status](https://img.shields.io/badge/Finalizado-0000FF) |
-| Programação para Temporizador Pomodoro         | ![Static Status](https://img.shields.io/badge/Executando-00BF00) |
+| Programação para Temporizador Pomodoro         | ![Static Status](https://img.shields.io/badge/Finalizado-0000FF) |
 | Detecção da carga da bateria       | ![Static Status](https://img.shields.io/badge/Executando-00BF00) |
 | Programação para WPS              | ![Static Status](https://img.shields.io/badge/Aguardando-FFFF00) |
 | Programação para NTP              | ![Static Status](https://img.shields.io/badge/Aguardando-FFFF00) |
@@ -149,5 +155,17 @@ https://github.com/arduino-libraries/NTPClient
 <hr style="border:0; height: 5px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 255, 1), rgba(0, 0, 0, 0));">
 
 ## Circuito montado no Protoboard
+
+
+Circuito completo
+
+![protoboard01](imagens/protoboard01.png)
+
+Detalhes da montagem
+
+![protoboard01](imagens/protoboard02.png)
+
+
+
 
 [Retornar para o Índice](#ancora)

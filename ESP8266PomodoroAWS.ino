@@ -19,7 +19,6 @@ unsigned long tContReg;
 unsigned long tMinutos;
 unsigned long tSegundos;
 
-
 //Configuração do Display TM1638
 #define STB_Pin D5 // Pino STB do TM1638
 #define CLK_Pin D6 // Pino CLK do TM1638
@@ -43,7 +42,6 @@ unsigned long botaoTimer[8];  //antiruido para os 8 botoes da placa
 unsigned long aceiteTimer;
 #define aceite 2500 // milessegundo para executar comendo menu
 
-
 //Declaração de funções
 bool botao(int b);
 void printString(const char* text);
@@ -58,8 +56,7 @@ void setup() {
   printString(buffer);
 
   Serial.begin(115200);
-  while(!Serial) yield();
- 
+  while(!Serial) yield(); 
 
   //Inicializa o RTC
   if (!rtc.begin()) {
@@ -78,7 +75,6 @@ void setup() {
   while ( digitalRead(SQW_Pin)) {;} // aguarda SQW = LOW para iniciar setup sincronizado
   SQW_sinc = true;
 }
-
 
 int conta_dia_temp = 0;
 
@@ -130,12 +126,9 @@ void loop() {
       }
 
 
-      if (botao(S1)){        
-        printString("Pomodoro");
-        ponto=false;
-        aceiteTimer = millis(); 
-        fSegundo = false;
-        automato = 1;
+      if (botao(S1)){     
+        ponto=false;        
+        iniciaPomodoro25_05();
       };
     break;
 
@@ -143,16 +136,11 @@ void loop() {
     case 1:
       if ( fSegundo && aceiteTimer + aceite < millis()) {
         fSegundo = false;
-        tContReg = 25*60;
-        //printString("P   25.00");
-        automato = 2;
+        iniciaP25();
       };
 
       if (botao(S1)){
-        printString("dAtAHorA");
-        aceiteTimer = millis(); 
-        fSegundo = false;
-        automato = 4;
+        iniciaDataHora();
       }; 
     break;
 
@@ -164,26 +152,25 @@ void loop() {
         tSegundos = tContReg%60;
         sprintf(buffer, "P25 %02d.%02d\0", tMinutos, tSegundos);
         printString(buffer);
-        tContReg--;
-        if (tContReg <= 0) {
-          contaBeep=1;
-          tContReg = 5*60;
-          automato = 3;
-        }       
+        tContReg--;      
+      };
+
+      if (tContReg <= 0) {
+        contaBeep=1;
+        iniciaP5();
+      } 
+
+      if (botao(S1)){
+        iniciaDataHora();
       };
 
       if (botao(S2)){
-          tContReg = 5*60;
-          automato = 3;
+        iniciaP25();
       }; 
 
-      if (botao(S1)){
-        printString("dAtAHorA");
-        aceiteTimer = millis(); 
-        fSegundo = false;
-        automato = 4;
-      };
-      
+      if (botao(S3)){
+        iniciaP5();
+      };       
     break;
 
 
@@ -194,25 +181,26 @@ void loop() {
         tSegundos = tContReg%60;
         sprintf(buffer, "P5  %02d.%02d\0", tMinutos, tSegundos);
         printString(buffer);
-        tContReg--;
-        if (tContReg <= 0) {
-          contaBeep=2;
-          tContReg =25*60;
-          automato = 2;
-        }        
+        tContReg--;       
       }
 
-      if (botao(S2)){
-          tContReg = 25*60;
-          automato = 2;
-      };
+      if (tContReg <= 0) {
+        contaBeep=2;
+        iniciaP25();
+      } 
 
       if (botao(S1)){
-        printString("dAtAHorA");
-        aceiteTimer = millis(); 
-        fSegundo = false;
-        automato = 4;
+        iniciaDataHora();
       }; 
+
+      if (botao(S2)){
+        iniciaP5();
+      };
+
+      if (botao(S3)){
+        iniciaP25();
+      };
+
     break;
 
 
@@ -224,13 +212,34 @@ void loop() {
       };
 
       if (botao(S1)){
-        printString("Pomodoro");
-        aceiteTimer = millis(); 
-        fSegundo = false;
-        automato = 1;
+        iniciaPomodoro25_05();
       };
     break;
   }  
+}
+
+void iniciaP25(){
+  tContReg = 25*60;
+  automato = 2;
+}
+
+void iniciaP5(){
+  tContReg = 5*60;
+  automato = 3;
+}
+
+void iniciaPomodoro25_05(){
+  printString("Podor 25");
+  aceiteTimer = millis(); 
+  fSegundo = false;
+  automato = 1;
+}
+
+void iniciaDataHora(){
+  printString("dAtAHorA");
+  aceiteTimer = millis(); 
+  fSegundo = false;
+  automato = 4;
 }
 
 
@@ -250,18 +259,16 @@ bool botao(button_t b){
 
 
 void printString(const char* text) {
-    int i = 0; //conta string
-    int j = 0; //conta posi no display
+    int i = 0; //conta posição na string
+    int j = 0; //conta posição no display
     while (text[i] != '\0' && j<8  ) {  // Continua até encontrar o caractere nulo ('\0')
         if (text[i+1] == '.'){
           tm.displayDig(7-j,converte( text[i], true));
-          //Serial.print(text[i]);
           i++;
         }else{
           tm.displayDig(7-j,converte( text[i], false));
         }
-        //Serial.print(text[i]);
-        i++;  // Avança para a próxima letra
+        i++;  // Avança para o próximo caracter na string
         j++;  // Avança para a próxima posição do display
         
     }
